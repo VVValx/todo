@@ -1,5 +1,5 @@
 .container {
-  width: 70%;
+  width: 80%;
   max-width: 1200px;
   margin: 10px auto;
 }
@@ -12,19 +12,53 @@
   margin: 15px 0;
 }
 
+.addTodo {
+  margin: 20px 0;
+}
+
+.addTodo input,
+.editTodo input,
+.search input {
+  border: 1px solid #d3d3d3;
+  border-radius: 3px;
+  padding: 8px 10px;
+  margin-right: 5px;
+}
+
+::placeholder {
+  color: #888888;
+}
+
+.addSearch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search {
+  flex-basis: 50%;
+  text-align: right;
+}
+
+.addTodo {
+  flex-basis: 50%;
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid #888888;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
 }
 
-tr:nth-child(odd) {
-  background: #888888;
+th {
+  color: #888888;
 }
 
 td {
   text-align: center;
-  padding: 5px 0;
+  padding: 10px 0;
+  color: #888888;
 }
 
 .btn {
@@ -32,6 +66,30 @@ td {
   padding: 7px 20px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.editBtn button:first-child {
+  margin-right: 5px;
+}
+
+.pagination {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.pagination div {
+  display: inline;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+  padding: 2px 13px;
+  margin: 0 3px;
+  cursor: pointer;
+  color: #888888;
+}
+
+.pagination div:hover {
+  background: #f08080;
+  color: #fff;
+  border: 1px solid #f08080;
 }
 
 .success {
@@ -44,21 +102,51 @@ td {
   color: #fff;
 }
 
-.pagination {
-  margin: 20px 0;
-  text-align: center;
+.add {
+  color: #fff;
+  background: #008080;
 }
 
-.pagination div {
-  display: inline;
-  border: 1px solid #888888;
-  padding: 2px 13px;
-  margin: 0 3px;
+.icon {
+  width: 25px;
+  height: 30px;
   cursor: pointer;
 }
 
-.pagination div:hover {
-  background: #f08080;
-  color: #fff;
-  border: 1px solid #f08080;
+.iconAdd {
+  color: #008080;
+}
+
+.iconDanger {
+  color: #cd5c5c;
+}
+
+.up {
+  transform: rotate(180deg);
+  transition: all 0.5s;
+}
+
+.down {
+  transition: all 0.5s;
+}
+
+@media screen and (max-width: 750px) {
+  .addSearch {
+    display: block;
+    margin: 10px 0 30px 0;
+  }
+
+  .addTodo {
+    text-align: center;
+  }
+
+  .search input {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .container {
+    width: 95%;
+  }
 }
