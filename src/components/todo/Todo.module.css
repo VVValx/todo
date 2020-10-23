@@ -1,0 +1,64 @@
+.container {
+  width: 70%;
+  max-width: 1200px;
+  margin: 10px auto;
+}
+
+.header {
+  text-align: center;
+  font-size: 36px;
+  color: #888888;
+  text-transform: uppercase;
+  margin: 15px 0;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #888888;
+}
+
+tr:nth-child(odd) {
+  background: #888888;
+}
+
+td {
+  text-align: center;
+  padding: 5px 0;
+}
+
+.btn {
+  border: none;
+  padding: 7px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.success {
+  background: #228b22;
+  color: #fff;
+}
+
+.danger {
+  background: #cd5c5c;
+  color: #fff;
+}
+
+.pagination {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.pagination div {
+  display: inline;
+  border: 1px solid #888888;
+  padding: 2px 13px;
+  margin: 0 3px;
+  cursor: pointer;
+}
+
+.pagination div:hover {
+  background: #f08080;
+  color: #fff;
+  border: 1px solid #f08080;
+}
