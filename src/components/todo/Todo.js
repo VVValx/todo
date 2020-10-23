@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import _ from "lodash";
-import { AiFillDelete } from "react-icons/ai";
-import { IoIosArrowDown } from "react-icons/io";
-import { MdModeEdit } from "react-icons/md";
 import { db } from "../firebase/Firebase";
+import Header from "../header/Header";
+import Table from "./TodoTable";
+import Input from "../../common/Input";
+import Div from "../../common/Div";
+import Button from "../../common/Button";
+import Pagination from "../../common/Pagination";
 import { Paginate } from "../../utils/Paginate";
-import Icon from "../icon/Icon";
+
 import todo from "./Todo.module.css";
 
 function Todo() {
@@ -104,8 +107,6 @@ function Todo() {
     setSortType("asc");
   };
 
-  console.log(sortType);
-
   const searchData =
     search.length > 1
       ? data.filter(
@@ -123,116 +124,52 @@ function Todo() {
   const pagination = Paginate(sort, pageSize, pageNumber);
 
   return (
-    <div className={todo.container}>
-      <header className={todo.header}>todo list</header>
+    <Div className={todo.container}>
+      <Header className={todo.header} label="todo list" />
 
-      <div className={todo.addSearch}>
-        <div className={todo.addTodo}>
-          <input
-            type="text"
+      <Div className={todo.addSearch}>
+        <Div className={todo.addTodo}>
+          <Input
             value={addTodo}
             placeholder="Add todo"
             onChange={(e) => setAddTodo(e.target.value)}
           />
 
-          <button className={`${todo.btn} ${todo.add}`} onClick={handleAdd}>
-            Add Todo
-          </button>
-        </div>
+          <Button
+            className={`${todo.btn} ${todo.add}`}
+            label="Add Todo"
+            onClick={handleAdd}
+          />
+        </Div>
 
-        <div className={todo.search}>
-          <input
-            type="text"
+        <Div className={todo.search}>
+          <Input
             value={search}
             placeholder="Search todo..."
             onChange={handleSearch}
           />
-        </div>
-      </div>
+        </Div>
+      </Div>
 
-      <table className={todo.table}>
-        <thead>
-          <tr>
-            <th>Completed</th>
-            <th onClick={sortedBy}>
-              Title{" "}
-              <Icon
-                label={<IoIosArrowDown />}
-                myClass={sortType === "desc" ? todo.up : todo.down}
-              />
-            </th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
+      <Table
+        sortedBy={sortedBy}
+        sortType={sortType}
+        pagination={pagination}
+        checkboxChange={checkboxChange}
+        editTodo={editTodo}
+        handleEditChange={handleEditChange}
+        saveTodo={saveTodo}
+        handleEdit={handleEdit}
+        deleteTodo={deleteTodo}
+      />
 
-        <tbody>
-          {pagination.map((d) => (
-            <tr key={d.id}>
-              <td>
-                <input type="checkbox" onChange={() => checkboxChange(d)} />
-              </td>
-              <td style={{ textDecoration: d.completed && "line-through" }}>
-                {d.edit ? (
-                  <div className={todo.editTodo}>
-                    <input
-                      type="text"
-                      value={editTodo}
-                      onChange={handleEditChange}
-                    />
-                  </div>
-                ) : (
-                  d.title
-                )}
-              </td>
-              <td>
-                {d.edit ? (
-                  <div className={todo.editBtn}>
-                    <button
-                      className={`${todo.btn} ${todo.add}`}
-                      onClick={() => saveTodo(d)}
-                    >
-                      Save
-                    </button>
-                    <button
-                      className={`${todo.btn} ${todo.danger}`}
-                      onClick={() => handleEdit(d)}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                ) : (
-                  <Icon
-                    label={<MdModeEdit />}
-                    myClass={`${todo.icon} ${todo.iconAdd}`}
-                    handleClick={() => handleEdit(d)}
-                  />
-                )}
-              </td>
-              <td>
-                <Icon
-                  label={<AiFillDelete />}
-                  myClass={`${todo.icon} ${todo.iconDanger}`}
-                  handleClick={() => deleteTodo(d)}
-                />
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <div className={todo.pagination}>
-        {range.map((r) => (
-          <div
-            key={r}
-            onClick={() => handlePageNumber(r)}
-            style={paginationStyle(r)}
-          >
-            {r}
-          </div>
-        ))}
-      </div>
-    </div>
+      <Pagination
+        className={todo.pagination}
+        range={range}
+        handlePageNumber={handlePageNumber}
+        paginationStyle={paginationStyle}
+      />
+    </Div>
   );
 }
 
