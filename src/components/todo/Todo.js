@@ -34,15 +34,17 @@ function Todo() {
 
   const handlePageNumber = (r) => {
     setPageNumber(r);
+    console.log(data);
   };
 
   const checkboxChange = async (d) => {
-    const ref = db.doc(`todos/${d.id}`);
-    const refGet = await ref.get();
-    const refData = refGet.data().completed;
+    const newData = [...data];
 
-    await ref.update({
-      completed: !refData,
+    const index = newData.indexOf(d);
+    newData[index].completed = !newData[index].completed;
+
+    await db.doc(`todos/${d.id}`).update({
+      completed: newData[index].completed,
     });
 
     getTodo();

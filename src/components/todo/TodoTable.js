@@ -37,7 +37,11 @@ function TodoTable({
         {pagination.map((d) => (
           <tr key={d.id}>
             <td>
-              <input type="checkbox" onChange={() => checkboxChange(d)} />
+              <input
+                type="checkbox"
+                onChange={() => checkboxChange(d)}
+                defaultChecked={d.completed ? true : false}
+              />
             </td>
             <td style={{ textDecoration: d.completed && "line-through" }}>
               {d.edit ? (
