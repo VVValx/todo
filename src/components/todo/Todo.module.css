@@ -154,4 +154,8 @@ td {
   .container {
     width: 95%;
   }
+
+  .btnSave {
+    margin-bottom: 5px;
+  }
 }

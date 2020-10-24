@@ -8,7 +8,6 @@ import Div from "../../common/Div";
 import Button from "../../common/Button";
 import Pagination from "../../common/Pagination";
 import { Paginate } from "../../utils/Paginate";
-
 import todo from "./Todo.module.css";
 
 function Todo() {
@@ -34,8 +33,9 @@ function Todo() {
 
   const handlePageNumber = (r) => {
     setPageNumber(r);
-    console.log(data);
   };
+
+  console.log(data);
 
   const checkboxChange = async (d) => {
     const newData = [...data];
@@ -113,9 +113,9 @@ function Todo() {
     search.length > 1
       ? data.filter(
           (d) =>
-            d.title.toLowerCase().startsWith(search) ||
-            d.title.toLowerCase().endsWith(search) ||
-            d.title.toLowerCase().includes(search)
+            d.title.toLowerCase().startsWith(search.toLocaleLowerCase()) ||
+            d.title.toLowerCase().endsWith(search.toLocaleLowerCase()) ||
+            d.title.toLowerCase().includes(search.toLocaleLowerCase())
         )
       : data;
 

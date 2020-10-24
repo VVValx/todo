@@ -60,7 +60,7 @@ function TodoTable({
               {d.edit ? (
                 <div className={todo.editBtn}>
                   <button
-                    className={`${todo.btn} ${todo.add}`}
+                    className={`${todo.btn} ${todo.add} ${todo.btnSave}`}
                     onClick={() => saveTodo(d)}
                   >
                     Save
