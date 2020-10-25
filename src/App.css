@@ -10,3 +10,16 @@
 body {
   font-family: "Titillium Web", sans-serif;
 }
+
+.link {
+  text-decoration: none;
+  color: #fff;
+}
+
+button {
+  cursor: pointer;
+}
+
+.error {
+  color: #cd5c5c;
+}

@@ -35,8 +35,6 @@ function Todo() {
     setPageNumber(r);
   };
 
-  console.log(data);
-
   const checkboxChange = async (d) => {
     const newData = [...data];
 

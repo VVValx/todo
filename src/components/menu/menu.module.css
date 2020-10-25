@@ -1,0 +1,45 @@
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5px;
+  background: #888888;
+}
+
+.items {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #888888;
+  color: #fff;
+}
+
+.left {
+  text-transform: uppercase;
+  font-size: 30px;
+  letter-spacing: 5px;
+}
+
+.left li {
+  cursor: pointer;
+}
+
+.right {
+  font-size: 20px;
+}
+
+.right li {
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.right li:first-child {
+  margin-right: 15px;
+  background: #008080;
+}
+
+.right li:last-child {
+  background: #cd5c5c;
+}

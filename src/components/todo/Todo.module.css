@@ -1,7 +1,7 @@
 .container {
   width: 80%;
   max-width: 1200px;
-  margin: 10px auto;
+  margin: 50px auto;
 }
 
 .header {
@@ -53,6 +53,7 @@
 
 th {
   color: #888888;
+  padding: 15px 0 4px 0;
 }
 
 td {

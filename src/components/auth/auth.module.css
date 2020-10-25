@@ -1,0 +1,89 @@
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 35%;
+  max-width: 500px;
+  min-width: 350px;
+}
+
+.header {
+  font-size: 36px;
+  color: #888;
+  text-transform: capitalize;
+  margin: 10px 0;
+}
+
+.formInput {
+  margin: 15px 0;
+  position: relative;
+}
+
+.formInput input {
+  width: 90%;
+  padding: 10px 55px;
+  border: 2px solid #008080;
+}
+
+.formInput ::placeholder {
+  color: #888888;
+  font-size: 16px;
+  text-transform: capitalize;
+  color: #008080;
+}
+
+.formInput button {
+  width: 90%;
+  border: none;
+  color: #fff;
+  padding: 12px 0;
+  background: #008080;
+}
+
+.icon {
+  position: absolute;
+  left: 5%;
+  width: 38px;
+  height: 38px;
+  top: 53%;
+  transform: translateY(-50%);
+  background: #008080;
+  color: #2f4f4f;
+}
+
+.orSection {
+  display: inline-block;
+  vertical-align: middle;
+  color: #888888;
+  margin: 0 3px;
+}
+
+.or {
+  font-size: 25px;
+}
+
+.underline {
+  border: 1px solid #888888;
+  width: 134px;
+}
+.gBtn {
+  background: #0000cd !important;
+}
+
+.gIcon {
+  position: absolute;
+  left: 5%;
+  width: 30px;
+  height: 30px;
+  top: 53%;
+  transform: translateY(-50%);
+}
+
+.userIcon {
+  width: 50px;
+  height: 50px;
+  border: 2px solid red;
+}

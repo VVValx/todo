@@ -1,13 +1,25 @@
 import React from "react";
 
-function Input({ className, type = "text", value, placeholder, onChange }) {
+function Input({
+  type = "text",
+  name = null,
+  value,
+  error = null,
+  placeholder,
+  onChange,
+}) {
   return (
-    <input
-      type={type}
-      value={value}
-      placeholder={placeholder}
-      onChange={onChange}
-    />
+    <React.Fragment>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        placeholder={name ? name : placeholder}
+        onChange={onChange}
+      />
+
+      {error && <p className="error">{error[name]}</p>}
+    </React.Fragment>
   );
 }
 export default Input;

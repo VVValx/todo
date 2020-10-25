@@ -1,11 +1,14 @@
 import React from "react";
 import { IconContext } from "react-icons";
 
-export default function Icon({ label, handleClick, myClass }) {
+export default function Icon({ label, handleClick, myClass, style = null }) {
   return (
     <span onClick={handleClick}>
       <IconContext.Provider
-        value={{ style: { verticalAlign: "middle" }, className: myClass }}
+        value={{
+          style: style || { verticalAlign: "middle" },
+          className: myClass,
+        }}
       >
         {label}
       </IconContext.Provider>
