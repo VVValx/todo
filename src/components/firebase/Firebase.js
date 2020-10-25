@@ -13,6 +13,39 @@ const firebaseConfig = {
   measurementId: "G-KGRRQ2CC5J",
 };
 
+export const createUserProfile = async (user, moreData) => {
+  if (!user) return;
+
+  const ref = db.doc(`users/${user.uid}`);
+
+  const userData = await ref.get();
+
+  if (!userData.exists) {
+    const { displayName, email } = user;
+    const dateCreated = new Date();
+    try {
+      await ref.set({ displayName, email, dateCreated, ...moreData });
+    } catch (error) {}
+  }
+
+  return ref;
+};
+
+export const createUserProfileWithEmail = async (user, name) => {
+  const ref = db.doc(`users/${user.uid}`);
+
+  const userData = await ref.get();
+
+  if (!userData.exists) {
+    const dateCreated = new Date();
+    try {
+      await ref.set({ ...user, displayName: name, dateCreated });
+    } catch (error) {}
+  }
+
+  return ref;
+};
+
 firebase.initializeApp(firebaseConfig);
 
 export const authenticate = firebase.auth();

@@ -1,5 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Joi from "joi";
+import {
+  authenticate,
+  provider,
+  createUserProfileWithEmail,
+} from "../firebase/Firebase";
+import { authContext } from "../../contexts/AuthContext";
 import { MdEmail } from "react-icons/md";
 import { BsLockFill } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
@@ -10,7 +16,7 @@ import Button from "../../common/Button";
 import Header from "../header/Header";
 import auth from "./auth.module.css";
 
-function Register() {
+function Register({ history }) {
   const [data, setData] = useState({
     name: "",
     password: "",
@@ -24,6 +30,8 @@ function Register() {
     repassword: "",
     email: "",
   });
+
+  const authCont = useContext(authContext);
 
   const schema = Joi.object({
     name: Joi.string().min(5).max(50).required(),
@@ -80,7 +88,36 @@ function Register() {
     handleRegister();
   };
 
-  const handleRegister = () => {};
+  const handleRegister = async () => {
+    try {
+      const user = await authenticate.createUserWithEmailAndPassword(
+        data.email,
+        data.password
+      );
+
+      await createUserProfileWithEmail(user, data.name);
+      history.replace("/login");
+
+      setData({
+        name: "",
+        password: "",
+        repassword: "",
+        email: "",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    try {
+      await authenticate.signInWithPopup(provider);
+      authCont.validateAuth(true);
+      history.replace("/");
+    } catch (error) {
+      setError(error.message);
+    }
+  };
 
   return (
     <div className={auth.container}>
@@ -157,7 +194,11 @@ function Register() {
       </div>
 
       <div className={auth.formInput}>
-        <Button label="Continue with Google" className={auth.gBtn} />
+        <Button
+          label="Continue with Google"
+          className={auth.gBtn}
+          onClick={signInWithGoogle}
+        />
         <Icon label={<FcGoogle />} myClass={`${auth.gIcon}`} />
       </div>
     </div>

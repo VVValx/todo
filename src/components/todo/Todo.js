@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import _ from "lodash";
 import { db } from "../firebase/Firebase";
+import CheckAuth from "../../hoc/CheckAuth";
 import Header from "../header/Header";
 import Table from "./TodoTable";
 import Input from "../../common/Input";
@@ -8,9 +9,10 @@ import Div from "../../common/Div";
 import Button from "../../common/Button";
 import Pagination from "../../common/Pagination";
 import { Paginate } from "../../utils/Paginate";
+import { userContext } from "../../contexts/UserContext";
 import todo from "./Todo.module.css";
 
-function Todo() {
+function Todo(props) {
   const [data, setData] = useState([]);
   const [pageSize] = useState(4);
   const [pageNumber, setPageNumber] = useState(1);
@@ -18,18 +20,25 @@ function Todo() {
   const [editTodo, setEditTodo] = useState("");
   const [search, setSearch] = useState("");
   const [sortType, setSortType] = useState("asc");
+  const [init, setInit] = useState(false);
+
+  const currentUser = useContext(userContext);
 
   useEffect(() => {
-    getTodo();
+    if (currentUser && !init) {
+      getTodo();
+      setInit(true);
+    }
   }, []);
 
-  const getTodo = async () => {
-    const todos = await db.collection("todos").get();
-    const todosData = todos.docs.map((doc) => {
+  async function getTodo() {
+    const todosRef = await db.collection(`users/${currentUser.id}/todos`).get();
+    const todos = todosRef.docs.map((doc) => {
       return { id: doc.id, ...doc.data() };
     });
-    setData(todosData);
-  };
+
+    setData(todos);
+  }
 
   const handlePageNumber = (r) => {
     setPageNumber(r);
@@ -41,7 +50,7 @@ function Todo() {
     const index = newData.indexOf(d);
     newData[index].completed = !newData[index].completed;
 
-    await db.doc(`todos/${d.id}`).update({
+    await db.doc(`users/${currentUser.id}/todos/${d.id}`).update({
       completed: newData[index].completed,
     });
 
@@ -49,15 +58,14 @@ function Todo() {
   };
 
   const deleteTodo = async (d) => {
-    const newTodos = data.filter((dat) => dat.id !== d.id);
-    setData(newTodos);
-    await db.doc(`todos/${d.id}`).delete();
+    await db.doc(`users/${currentUser.id}/todos/${d.id}`).delete();
+    getTodo();
   };
 
   const handleAdd = async () => {
     if (!addTodo) return alert("Please describe todo");
     const obj = { title: addTodo, completed: false };
-    await db.collection("todos").add(obj);
+    await db.collection(`users/${currentUser.id}/todos`).add(obj);
 
     getTodo();
 
@@ -79,7 +87,7 @@ function Todo() {
 
   const saveTodo = async (d) => {
     if (!editTodo) return alert("Please enter description");
-    await db.doc(`todos/${d.id}`).update({
+    await db.doc(`users/${currentUser.id}/todos/${d.id}`).update({
       title: editTodo.trim(),
     });
 
@@ -124,52 +132,54 @@ function Todo() {
   const pagination = Paginate(sort, pageSize, pageNumber);
 
   return (
-    <Div className={todo.container}>
-      <Header className={todo.header} label="todo list" />
+    <CheckAuth {...props}>
+      <Div className={todo.container}>
+        <Header className={todo.header} label="todo list" />
 
-      <Div className={todo.addSearch}>
-        <Div className={todo.addTodo}>
-          <Input
-            value={addTodo}
-            placeholder="Add todo"
-            onChange={(e) => setAddTodo(e.target.value)}
-          />
+        <Div className={todo.addSearch}>
+          <Div className={todo.addTodo}>
+            <Input
+              value={addTodo}
+              placeholder="Add todo"
+              onChange={(e) => setAddTodo(e.target.value)}
+            />
 
-          <Button
-            className={`${todo.btn} ${todo.add}`}
-            label="Add Todo"
-            onClick={handleAdd}
-          />
+            <Button
+              className={`${todo.btn} ${todo.add}`}
+              label="Add Todo"
+              onClick={handleAdd}
+            />
+          </Div>
+
+          <Div className={todo.search}>
+            <Input
+              value={search}
+              placeholder="Search todo..."
+              onChange={handleSearch}
+            />
+          </Div>
         </Div>
 
-        <Div className={todo.search}>
-          <Input
-            value={search}
-            placeholder="Search todo..."
-            onChange={handleSearch}
-          />
-        </Div>
+        <Table
+          sortedBy={sortedBy}
+          sortType={sortType}
+          pagination={pagination}
+          checkboxChange={checkboxChange}
+          editTodo={editTodo}
+          handleEditChange={handleEditChange}
+          saveTodo={saveTodo}
+          handleEdit={handleEdit}
+          deleteTodo={deleteTodo}
+        />
+
+        <Pagination
+          className={todo.pagination}
+          range={range}
+          handlePageNumber={handlePageNumber}
+          paginationStyle={paginationStyle}
+        />
       </Div>
-
-      <Table
-        sortedBy={sortedBy}
-        sortType={sortType}
-        pagination={pagination}
-        checkboxChange={checkboxChange}
-        editTodo={editTodo}
-        handleEditChange={handleEditChange}
-        saveTodo={saveTodo}
-        handleEdit={handleEdit}
-        deleteTodo={deleteTodo}
-      />
-
-      <Pagination
-        className={todo.pagination}
-        range={range}
-        handlePageNumber={handlePageNumber}
-        paginationStyle={paginationStyle}
-      />
-    </Div>
+    </CheckAuth>
   );
 }
 

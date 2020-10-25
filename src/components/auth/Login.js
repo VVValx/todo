@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { MdEmail } from "react-icons/md";
 import { BsLockFill } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import { authenticate, provider } from "../firebase/Firebase";
+import { authContext } from "../../contexts/AuthContext";
 import Input from "../../common/Input";
 import Icon from "../icon/Icon";
 import Button from "../../common/Button";
@@ -16,6 +17,7 @@ function Login({ history }) {
   });
 
   const [error, setError] = useState("");
+  const authCont = useContext(authContext);
 
   const handleChange = ({ target: input }) => {
     const newData = { ...data };
@@ -40,13 +42,21 @@ function Login({ history }) {
     handleLogin();
   };
 
-  const handleLogin = () => {
-    console.log("logged in");
+  const handleLogin = async () => {
+    const { email, password } = data;
+    try {
+      await authenticate.signInWithEmailAndPassword(email, password);
+      authCont.validateAuth(true);
+      history.replace("/");
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const signInWithGoogle = async () => {
     try {
       await authenticate.signInWithPopup(provider);
+      authCont.validateAuth(true);
       history.replace("/");
     } catch (error) {
       setError(error.message);
